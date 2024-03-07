@@ -1,2 +1,2 @@
-# All_Projects
-All Programming Projects
+# Cypress Projects
+All Cypress Automation Web Projects
