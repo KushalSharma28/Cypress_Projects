@@ -3,8 +3,8 @@ All Cypress Automation Web Projects
 
 Cypress Commands to run the Automation Code
 
-Open VS(Visual Studio) Code terminal and run command = "npm init -y"
-install cypress = "npm install cypress" 
-check cypress version = "npx cypress -v"
-check cypress verify = "npx cypress verify"
-open cypress = "npx cypress open"
+Step 1) Open VS(Visual Studio) Code terminal and run command = "npm init -y"
+Step 2) Install cypress = "npm install cypress" 
+Step 3) Check cypress version = "npx cypress -v"
+Step 4) Check cypress verify = "npx cypress verify"
+Step 5) Open cypress = "npx cypress open"
