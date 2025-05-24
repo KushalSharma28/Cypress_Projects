@@ -15,7 +15,15 @@ describe('Amazon Purchase Flow Without Login', () => {
     // Step 2: Skip login (we'll proceed as guest at checkout)
     
     // Step 3: Select category for Electronic gadgets
-    cy.get('#searchDropdownBox').select('Electronics');
+    //cy.get('#searchDropdownBox').select('Electronics');
+    //cy.get('#searchDropdownBox').select('Electronic', { force: true });
+    cy.get('#searchDropdownBox').should('be.visible').select('Electronics', { force: true });
+    cy.get('#searchDropdownBox').then(($el) => 
+    {
+        console.log($el.css('opacity')); // Check the opacity
+        console.log($el.is(':visible')); // Check if it's visible
+    });
+
     
     // Step 4: Search for Motorola phone
     cy.get('#twotabsearchtextbox').type('Motorola edge 40'); // Using a more common model
