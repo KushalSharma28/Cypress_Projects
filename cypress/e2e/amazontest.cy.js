@@ -1,11 +1,11 @@
 describe('Amazon Purchase Flow', () => {
     // Test data - replace with your dummy credentials
-    const testUser = {
+    var testUser = {
       email: 'kushalsharmaji2@gmail.com', // testuser@example.com
       password: 'Kushal@99' // TestPassword123
     };
     
-    const paymentInfo = {
+    var paymentInfo = {
       cardNumber: '4111111111111111',
       name: 'Test User',
       expiry: '12/25',
@@ -14,7 +14,7 @@ describe('Amazon Purchase Flow', () => {
   
     beforeEach(() => {
       // Step 1: Go to website
-      cy.visit('https://www.amazon.com');
+      cy.visit('https://www.amazon.in');
       
       // Handle cookie consent if it appears
       cy.get('body').then(($body) => {
