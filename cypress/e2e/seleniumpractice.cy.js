@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
-describe('My First Test Suite', function()
+describe('Selenium Practice Test Suite', function()
 {
-    it('My First Test Case', function()
+    it('Selenium Practice Test Case', function()
     {
         cy.visit("https://rahulshettyacademy.com/seleniumPractise/#/")
         cy.get('.search-keyword').type('ca')
