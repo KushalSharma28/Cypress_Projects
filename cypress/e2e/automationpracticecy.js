@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
-describe('My Second Test Suite', function()
+describe('Automation Practice Test Suite', function()
 {
-    it('My Second Test Case', function()
+    it('Automation Practice Test Case', function()
     {
         //check boxes
         cy.visit("https://rahulshettyacademy.com/AutomationPractice/")
