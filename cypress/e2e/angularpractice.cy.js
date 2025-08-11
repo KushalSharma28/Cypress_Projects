@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe('My Third Test Suite', function()
+describe('Angular Practice Test Suite', function()
 {
     before(function(){
         cy.fixture('example').then(function(data)
@@ -8,7 +8,7 @@ describe('My Third Test Suite', function()
             this.data=data
         })
     })
-    it('My Third Test Case', function(){
+    it('Angular Practice Test Case', function(){
         cy.visit("https://rahulshettyacademy.com/angularpractice/")
         cy.get('input[name="name"]:nth-child(2)').type(this.data.data)
         cy.get('select').select(this.data.gender)
