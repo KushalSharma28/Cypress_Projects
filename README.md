@@ -13,6 +13,36 @@ Step 4) Check cypress verify = "npx cypress verify"
 
 Step 5) Open cypress = "npx cypress open"
 
+Cypress Other Commands 
+------------------------------------------------------------------------------
+
+Run a Single File 
+npx cypress run --spec "cypress/e2e/my-spec.cy.js"
+
+Run Multiple or Specific Files
+
+# Run all files matching a pattern
+npx cypress run --spec "cypress/e2e/auth/*.cy.js"
+
+# Run multiple files using comma separation
+npx cypress run --spec "cypress/e2e/login.cy.js,cypress/e2e/register.cy.js"
+
+Run in a Specific Browser
+npx cypress run --browser chrome
+
+Run in Headless Browser
+npx cypress run --headless
+
+# to run a specific spec in headless Chrome
+npx cypress run --spec "cypress/e2e/my-spec.cy.js" --browser chrome --headless
+
+Command	Description
+npx cypress run --spec "file"	Run a single file 
+npx cypress run --spec "pattern/*.js"	Run matching files 
+npx cypress run --spec "file1,file2"	Run multiple specific files 
+npx cypress run --browser chrome	Run in Chrome browser 
+npx cypress run --headless	Headless mode 
+
 Environment Setup
 -----------------------
 1) Download & install nodejs  
