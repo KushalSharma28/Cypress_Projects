@@ -25,11 +25,13 @@ All Cypress Automation Web Projects.
   ```
 
 4. **Verify Cypress Installation:**
+
   ```bash
     npx cypress -v          # Check Cypress version
     npx cypress verify      # Verify installation
 
 5. **Open Cypress with command line:**
+
   ```bash  
     npx cypress open
 
@@ -40,25 +42,35 @@ Cypress Other Commands
 
 ---
 
-Run a Single File 
-npx cypress run --spec "cypress/e2e/my-spec.cy.js"
+1. **Run a Single File** 
+  ```bash
+    npx cypress run --spec "cypress/e2e/my-spec.cy.js"
+  ```
 
-Run Multiple or Specific Files
+2. **Run Multiple or Specific Files:**
+  - Run all files matching a pattern
+  ```bash
+    npx cypress run --spec "cypress/e2e/auth/*.cy.js"
+  ```
+  - Run multiple files using comma separation
+  ```bash
+    npx cypress run --spec "cypress/e2e/login.cy.js,cypress/e2e/register.cy.js"
+  ```  
 
-# Run all files matching a pattern
-npx cypress run --spec "cypress/e2e/auth/*.cy.js"
+3. **Run in a Specific Browser**
+  ```bash
+    npx cypress run --browser chrome
+  ```
 
-# Run multiple files using comma separation
-npx cypress run --spec "cypress/e2e/login.cy.js,cypress/e2e/register.cy.js"
+4. **Run in Headless Browser**
+  ```bash
+    npx cypress run --headless
+  ```
 
-Run in a Specific Browser
-npx cypress run --browser chrome
-
-Run in Headless Browser
-npx cypress run --headless
-
-# to run a specific spec in headless Chrome
-npx cypress run --spec "cypress/e2e/my-spec.cy.js" --browser chrome --headless
+5. **to run a specific spec in headless Chrome**
+  ```bash
+  npx cypress run --spec "cypress/e2e/my-spec.cy.js" --browser chrome --headless
+  ```
 
 Command	Description
 | Command                                 | Description                      |
