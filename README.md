@@ -37,10 +37,7 @@ All Cypress Automation Web Projects.
   ```bash  
     npx cypress open
   ```
-
-6. **Open Cypress with GUI:**
-  - Open the folder node_modules/.bin/cypress open
-
+---
 
 ## Cypress Other Commands 
 
