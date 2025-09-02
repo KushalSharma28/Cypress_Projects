@@ -25,6 +25,7 @@ All Cypress Automation Web Projects.
   ```
 
 4. **Verify Cypress Installation:**
+  - Check the Cypress Version and Verify the Installation using command line
 
   ```bash
     npx cypress -v          # Check Cypress version
@@ -40,7 +41,8 @@ All Cypress Automation Web Projects.
 6. **Open Cypress with GUI:**
   - Open the folder node_modules/.bin/cypress open
 
-Cypress Other Commands 
+
+## Cypress Other Commands 
 
 ---
 
