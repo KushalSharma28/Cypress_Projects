@@ -14,29 +14,30 @@ All Cypress Automation Web Projects.
    - Open the folder in VSCode.
    - Open the terminal and initialize a Node.js project:
 
-     ```bash
-     npm init -y
-     ```
+    ```bash
+    npm init -y
+    ```
 
 3. **Install Cypress:**
 
-   ```bash
+    ```bash
     npm install cypress --save-dev
-  ```
+    ```
 
 4. **Verify Cypress Installation:**
-  - Check the Cypress Version and Verify the Installation using command line
+    - Check the Cypress version and verify the installation using the command line:
 
-  ```bash
+    ```bash
     npx cypress -v          # Check Cypress version
     npx cypress verify      # Verify installation
-  ```  
+    ```
 
-5. **Open Cypress with command line:**
+5. **Open Cypress via Command Line:**
 
-  ```bash  
+    ```bash
     npx cypress open
-  ```
+    ```
+
 ---
 
 ## Cypress Other Commands 
