@@ -1,20 +1,44 @@
-# Cypress Projects
-All Cypress Automation Web Projects
+# 🚀 Cypress Projects
 
-Cypress Commands to run the Automation Code
--------------------------------------------------------------------------------
-Step 1) Open VS(Visual Studio) Code terminal and run command = "npm init -y"
+All Cypress Automation Web Projects.
 
-Step 2) Install cypress = "npm install cypress" 
+---
 
-Step 3) Check cypress version = "npx cypress -v"
+## 📦 Environment Setup
 
-Step 4) Check cypress verify = "npx cypress verify"
+1. **Download & Install:**
+   - [Node.js](https://nodejs.org/)
+   - [Visual Studio Code (VSCode)](https://code.visualstudio.com/)
 
-Step 5) Open cypress = "npx cypress open"
+2. **Create Your Project Folder:**
+   - Open the folder in VSCode.
+   - Open the terminal and initialize a Node.js project:
+
+     ```bash
+     npm init -y
+     ```
+
+3. **Install Cypress:**
+
+   ```bash
+    npm install cypress --save-dev
+  ```
+
+4. **Verify Cypress Installation:**
+  ```bash
+    npx cypress -v          # Check Cypress version
+    npx cypress verify      # Verify installation
+
+5. **Open Cypress with command line:**
+  ```bash  
+    npx cypress open
+
+6. **Open Cypress with GUI:**
+  - Open the folder node_modules/.bin/cypress open
 
 Cypress Other Commands 
-------------------------------------------------------------------------------
+
+---
 
 Run a Single File 
 npx cypress run --spec "cypress/e2e/my-spec.cy.js"
@@ -37,26 +61,11 @@ npx cypress run --headless
 npx cypress run --spec "cypress/e2e/my-spec.cy.js" --browser chrome --headless
 
 Command	Description
-npx cypress run --spec "file"	Run a single file 
-npx cypress run --spec "pattern/*.js"	Run matching files 
-npx cypress run --spec "file1,file2"	Run multiple specific files 
-npx cypress run --browser chrome	Run in Chrome browser 
-npx cypress run --headless	Headless mode 
+| Command                                 | Description                      |
+| --------------------------------------- | -------------------------------- |
+| `npx cypress run --spec "file"`         | Run a single test file           |
+| `npx cypress run --spec "pattern/*.js"` | Run multiple files using pattern |
+| `npx cypress run --spec "file1,file2"`  | Run multiple specific files      |
+| `npx cypress run --browser chrome`      | Run tests in Chrome browser      |
+| `npx cypress run --headless`            | Run tests in headless mode       |
 
-Environment Setup
------------------------
-1) Download & install nodejs  
-
-2) Download & install visual studio code (VSCode)
-
-3) create a new folder for project & open in VSCode
-
-4) open cmd/terminal then execute below command(this will create package.json)
-  npm -i init     
-
-5) to install cypress 
-  npm install cypress --save -dev
-
-6) start cypress
- npx cypress open     (or)
- node_modules/.bin/cypress open
