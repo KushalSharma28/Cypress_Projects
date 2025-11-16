@@ -29,20 +29,5 @@ describe('Selenium Practice Test Suite', function()
         cy.get('select').select("India")
         cy.get('.chkAgree').check();
         cy.get('button').contains('Proceed').click();
-
-        cy.get('select').select('India');
-
-        cy.get('.chkAgree').check();
-
-        cy.contains('button', 'Proceed').click();
-
-        // cy.get('.brand').then(function(logoelement)
-        // {
-        //     cy.log(logoelement.text())
-        // })
-        // const logo=cy.get('.brand')
-        
-        // cy.get('.brand').text()
-        // cy.log(logo.text())
     })
 })
