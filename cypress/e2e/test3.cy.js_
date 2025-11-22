@@ -1,0 +1,121 @@
+/**
+ * ADVANCED CYPRESS ARCHITECTURE DEMO
+ * 
+ * Concepts Covered:
+ * 1. Custom Commands - Encapsulating complex logic
+ * 2. cy.session() - Caching login state (Huge speed boost)
+ * 3. cy.origin() - Handling Third-Party Logins (Simulated via Wikipedia)
+ * 4. Dynamic Data Driven Testing - Generating tests from JSON
+ */
+
+// ====================================================
+// 1. DATA SETUP (Dynamic Data Driven Testing)
+// ====================================================
+const testUsers = [
+  { 
+    id: 'user_admin', 
+    role: 'Admin', 
+    permissions: 'Full Access', 
+    // We use a search term to simulate a unique "password" or identifier
+    mockCredential: 'Cypress Automation' 
+  },
+  { 
+    id: 'user_guest', 
+    role: 'Guest', 
+    permissions: 'Read Only', 
+    mockCredential: 'Software Testing' 
+  }
+];
+
+// ====================================================
+// 2. CUSTOM COMMAND DEFINITION
+// ====================================================
+// Usually placed in cypress/support/commands.js, but defined here for this single-file demo.
+Cypress.Commands.add('loginViaSSO', (user) => {
+  
+  // CONCEPT: cy.session()
+  // Cypress will check if a session named `user.id` exists.
+  // If YES: It restores cookies/localStorage instantly (skipping the body).
+  // If NO: It executes the body, then caches the result.
+  cy.session(
+    user.id, 
+    () => {
+      cy.log(`🔵 Starting Fresh SSO Login for: ${user.role}`);
+
+      // A. Simulate starting at our App
+      cy.visit('https://example.cypress.io');
+
+      // B. Simulate redirect to Third-Party Auth Provider (using Wikipedia as a mock Auth0)
+      // In a real app, clicking "Login" would redirect you here automatically.
+      cy.visit('https://en.wikipedia.org/wiki/Special:UserLogin');
+
+      // CONCEPT: cy.origin()
+      // Required because wikipedia.org is a different domain than example.cypress.io
+      cy.origin('https://en.wikipedia.org', { args: { user } }, ({ user }) => {
+        // --- INSIDE THIRD PARTY ORIGIN ---
+        
+        // 1. Interact with the "Login Form" (Simulated)
+        // Note: Wikipedia's login input IDs are specific
+        cy.get('input#wpName1').type(user.mockCredential); // Username input
+        cy.get('input#wpPassword1').type('DummyPassword'); // Password input
+        
+        // We are typing into the search box to mimic entering credentials
+        //cy.get('input[name="search"]').click().type(`${user.mockCredential}{enter}`);
+
+        // 2. Verify "Authentication" Success
+        // In real Auth0, you would click 'Sign In'. Here we verify we landed on the result page.
+        cy.get('#firstHeading').should('exist');
+        
+        cy.log('🟢 Third Party Auth Successful');
+      });
+
+      // C. Set Authentication State (The "Handshake")
+      // After a real SSO redirect, the app would set a token. We simulate that here.
+      cy.setCookie('session_token', `token_${user.id}`);
+      cy.window().then((win) => {
+        win.localStorage.setItem('user_role', user.role);
+      });
+      
+      cy.log('🟢 Token & Storage Set');
+    },
+    {
+      // Optional: Validation to ensure session is still valid before restoring
+      validate: () => {
+        cy.getCookie('session_token').should('exist');
+      }
+    }
+  );
+});
+
+// ====================================================
+// 3. TEST SUITE
+// ====================================================
+describe('Advanced Enterprise Auth Pattern', () => {
+
+  // CONCEPT: Dynamic Data Driven Testing
+  // We loop through our data array to generate multiple distinct tests
+  testUsers.forEach((user) => {
+
+    it(`Scenario: User [${user.role}] can access dashboard with [${user.permissions}]`, () => {
+      
+      // CONCEPT: Reusable Custom Command
+      // This handles all the complexity (Session + Origin + Actions)
+      // 1st run for 'Admin': Executes full login steps (slow ~2-3s)
+      // 2nd run for 'Admin': Restores from cache instantly (fast ~50ms)
+      cy.loginViaSSO(user);
+
+      // After login, we visit the protected internal page
+      cy.visit('https://example.cypress.io/commands/storage');
+
+      // Verify our "Session" worked
+      cy.getCookie('session_token')
+        .should('have.property', 'value', `token_${user.id}`);
+      
+      // Verify we are in the context of our application
+      cy.get('h1').should('contain', 'Cypress');
+      
+      cy.log(`✅ Verified access for ${user.role}`);
+    });
+
+  });
+});

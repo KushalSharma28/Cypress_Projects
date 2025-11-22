@@ -1,0 +1,198 @@
+/**
+ * ADVANCED CYPRESS ARCHITECTURE DEMO
+ * Concepts Covered:
+ * 1. cy.session() - Caching login state (Huge speed boost)
+ * 2. Custom Commands - Reusable logic
+ * 3. cy.origin() - Handling Third-Party Logins (Auth0/Google)
+ * 4. Dynamic Data Driven Testing
+ */
+
+// Define a list of users for Data Driven Testing
+// const users = [
+//     { type: 'admin', username: 'admin_user' },
+//     { type: 'guest', username: 'guest_user' }
+// ];
+
+// describe('Advanced Architecture Patterns', () => {
+
+//     // --- CONCEPT 1: cy.session() ---
+//     // This logic would usually go in commands.js, but placed here for demo.
+//     // It logs the user in ONCE. Subsequent tests restore the cookies instantly.
+//     const loginViaSession = (userType) => {
+//         cy.session(userType, () => {
+//             // Assume this is a complex login process
+//             cy.visit('https://example.cypress.io/commands/actions');
+            
+//             // Simulate setting a token or cookie that implies "Logged In"
+//             cy.setCookie('auth_token', `token_for_${userType}`);
+//             window.localStorage.setItem('user_role', userType);
+            
+//             cy.log(`${userType} logged in and session cached!`);
+//         });
+//     };
+
+//     users.forEach((user) => {
+//         it(`Perform admin actions as ${user.type} (Data Driven)`, () => {
+//             // 1. Restore the session (Instant)
+//             loginViaSession(user.type);
+
+//             // 2. Visit page (Cookies are already set)
+//             cy.visit('https://example.cypress.io/todo');
+
+//             // 3. Verify we are "logged in" (checking the cookie we set)
+//             cy.getCookie('auth_token').should('have.property', 'value', `token_for_${user.type}`);
+//         });
+//     });
+
+//     it('Demonstrates cy.origin (Cross-Domain Handling)', () => {
+//         // Imagine clicking "Login with Google" redirects you to accounts.google.com
+//         // Cypress < v10 failed here. Now we use cy.origin.
+        
+//         // Mocking a visit to a different domain
+//         // NOTE: This requires the experimentalSessionAndOrigin flag in older Cypress versions
+//         // but is standard in Cypress 12+
+        
+//         const externalUrl = 'https://www.wikipedia.org';
+
+//         cy.visit(externalUrl);
+
+//         // --- CONCEPT 3: cy.origin ---
+//         // You cannot access elements on wikipedia.org from the main test scope
+//         // if your baseUrl was something else. You must use cy.origin.
+//         cy.origin(externalUrl, () => {
+//             // Inside this block, we are technically "inside" Wikipedia
+//             cy.get('input[name="search"]').type('Cypress Testing{enter}');
+//             cy.get('#firstHeading').should('contain', 'Cypress');
+//         });
+//     });
+// });
+
+/* --- INSTRUCTIONS TO ENABLE CUSTOM COMMANDS ---
+   In a real project, you would add this to cypress/support/commands.js:
+   
+   Cypress.Commands.add('login', (username, password) => { ... })
+   
+   And use it in tests like: cy.login('admin', '1234')
+*/
+
+/**
+ * FIXED ADVANCED ARCHITECTURE DEMO
+ * Concepts:
+ * 1. cy.session() - Caching login state
+ * 2. cy.origin() - CORRECT implementation of Cross-Domain testing
+ */
+
+// describe('Advanced Architecture Patterns', () => {
+
+//     // --- CONCEPT 1: cy.session() ---
+//     // This simulates a login command.
+//     // It runs the setup ONLY once per "userType".
+//     const loginViaSession = (userType) => {
+//         cy.session(userType, () => {
+//             // 1. We log a message to show when the "Real Login" happens
+//             cy.log(`*** PERFORMING FRESH LOGIN FOR ${userType} ***`);
+            
+//             // 2. Set a cookie/localStorage to mimic being logged in
+//             // In a real app, you would cy.request() to your login API here.
+//             cy.setCookie('auth_token', `token_for_${userType}`);
+//             window.localStorage.setItem('user_role', userType);
+//         });
+//     };
+
+//     // Data-driven test case
+//     const users = ['admin', 'guest'];
+
+//     users.forEach((user) => {
+//         it(`Maintains session for ${user}`, () => {
+//             // First time: Runs the code inside loginViaSession
+//             // Second time: Instantly restores cookies from cache (No code run)
+//             loginViaSession(user);
+
+//             cy.visit('https://example.cypress.io/commands/actions');
+            
+//             // Verify our "fake" login persisted
+//             cy.getCookie('auth_token').should('have.property', 'value', `token_for_${user}`);
+//         });
+//     });
+
+//     it('Demonstrates cy.origin (The Correct Way)', () => {
+//         // STEP 1: Start on Domain A (The "Top" Origin)
+//         cy.visit('https://example.cypress.io');
+
+//         // STEP 2: Trigger a Cross-Domain Navigation
+//         // We force the browser to go to Wikipedia. 
+//         // This simulates clicking a <a href="..."> or a redirect.
+//         cy.window().then((win) => {
+//             win.location.href = 'https://www.wikipedia.org';
+//         });
+
+//         // STEP 3: Use cy.origin to interact with Domain B
+//         // Because we started on cypress.io, we cannot touch wikipedia.org 
+//         // without this block.
+//         cy.origin('https://www.wikipedia.org', () => {
+//             // INSIDE THIS BLOCK: The context is now Wikipedia
+            
+//             // Verify we arrived
+//             cy.get('h1').should('contain', 'Wikipedia');
+            
+//             // Search for something
+//             cy.get('input[name="search"]').type('Cypress Testing{enter}');
+            
+//             // Verify results
+//             cy.get('#firstHeading').should('contain', 'Cypress');
+//         });
+
+//         // STEP 4: Back to Domain A (Optional)
+//         // Once the cy.origin block ends, Cypress returns context to example.cypress.io
+//         cy.log('Finished cross-origin actions');
+//     });
+// });
+
+describe('Advanced Architecture Patterns', () => {
+
+    // --- CONCEPT 1: cy.session() ---
+    const loginViaSession = (userType) => {
+        cy.session(userType, () => {
+            cy.log(`*** PERFORMING FRESH LOGIN FOR ${userType} ***`);
+            
+            // FIX 1: Use cy.window() to access application window
+            cy.setCookie('auth_token', `token_for_${userType}`);
+            cy.window().then((win) => {
+                win.localStorage.setItem('user_role', userType);
+            });
+        });
+    };
+
+    const users = ['admin', 'guest'];
+
+    users.forEach((user) => {
+        it(`Maintains session for ${user}`, () => {
+            loginViaSession(user);
+            cy.visit('https://example.cypress.io/commands/actions');
+            cy.getCookie('auth_token').should('have.property', 'value', `token_for_${user}`);
+        });
+    });
+
+    it('Demonstrates cy.origin (The Correct Way)', () => {
+        // STEP 1: Start on Domain A
+        cy.visit('https://example.cypress.io');
+
+        // FIX 2: Use cy.origin with cy.visit() instead of window.location.href
+        cy.origin('https://www.wikipedia.org', () => {
+            // Navigate to the origin inside the block
+            cy.visit('/');
+            
+            // Verify we arrived
+            cy.get('h1').should('contain', 'Wikipedia');
+            
+            // Search for something
+            cy.get('input[name="search"]').type('Cypress Testing{enter}');
+            
+            // Verify results
+            cy.get('#firstHeading').should('contain', 'Cypress');
+        });
+
+        // STEP 4: Back to Domain A
+        cy.log('Finished cross-origin actions');
+    });
+});

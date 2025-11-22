@@ -30,7 +30,7 @@ describe('Tricentis Demo Test Suite', () => {
     });
   });
 
-  it('Login Page – Log in with registered user', () => {
+  it('Login Page Log in with registered user', () => {
     // Navigate to URL
     cy.visit("https://demowebshop.tricentis.com");
 
