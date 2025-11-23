@@ -1,8 +1,10 @@
 /// <reference types="cypress" />
 
-describe('Tricentis Demo Test Suite', () => {
+describe('Tricentis Demo Test Suite', () => 
+{
 
-  it('Registration Page – Register a new user', () => {
+  it('Registration Page – Register a new user', () => 
+  {
     // Navigate to URL
     cy.visit("https://demowebshop.tricentis.com");
 
@@ -21,16 +23,21 @@ describe('Tricentis Demo Test Suite', () => {
     cy.get('#register-button').should('be.visible').click();
 
     // Assert registration success or already registered
-    cy.get('body').then(($body) => {
-      if ($body.text().includes('The specified email already exists')) {
+    cy.get('body').then(($body) => 
+    {
+      if ($body.text().includes('The specified email already exists')) 
+      {
         cy.log('User is already registered.');
-      } else {
+      } 
+      else 
+      {
         cy.log('Registration successful.');
       }
     });
   });
 
-  it('Login Page Log in with registered user', () => {
+  it('Login Page Log in with registered user', () => 
+  {
     // Navigate to URL
     cy.visit("https://demowebshop.tricentis.com");
 

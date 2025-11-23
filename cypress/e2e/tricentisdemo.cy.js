@@ -2,11 +2,13 @@ import register from '../pages/register.cy';
 import login from '../pages/login.cy';
 import navigatehomepage from '../pages/navigatehomepage.cy';
 
-describe('Tricentis Demo Test Suite', () => {
+describe('Tricentis Demo Test Suite', () => 
+{
     const register = new register();
     const login = new login();
 
-  it('Registration Flow', () => {
+  it('Registration Flow', () => 
+  {
         navigation.visit();
         
         // Navigate to Register and register user
